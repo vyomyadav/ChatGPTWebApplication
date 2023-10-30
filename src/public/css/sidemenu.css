@@ -43,7 +43,7 @@
 	overflow: hidden;
 }
 .app-content .side-app {
-	padding: 100px 1.5rem 0 1.5rem;
+	padding: 25px 1.5rem 0 1.5rem;
 }
 
 .app-content .side-app .display-flex {
@@ -342,6 +342,93 @@
 	background: #fff !important;
 	border-right:1px solid rgba(67, 87, 133, .2)
 }
+@media (min-width: 2000px) {
+
+	.app-sidebar {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		margin-top: 75px;
+		width: 350px;
+		max-height: 100%;
+		z-index: 1;
+		background: #fff !important;
+		border-right:1px solid rgba(67, 87, 133, .2)
+	}
+
+	.side-menu__item {
+		display: flex;
+		justify-content: center;
+		position: relative;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		padding:25px 19px 25px 34px;
+		font-size: 25px;
+		font-weight: 400;
+		-webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		-o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		color:#031938;
+		border-bottom: 1px solid rgba(67, 87, 133, .2);
+		cursor: pointer;
+	}
+
+	.app-content {
+		margin-left: 350px !important;
+	}
+
+	.page-title {
+		font-size: 35px;
+	}
+
+	.breadcrumb-item {
+		font-size: 20px;
+	}
+
+	.app-content .side-app .display-flex {
+		padding: 200px 1.5rem 0 1.5rem;
+	}
+
+	.card {
+		margin-bottom: 2.5rem;
+		height: 60px;
+	}
+
+	.card-header {
+		height: 60px;
+	}
+
+	.card-title {
+		font-size: 1.4rem;
+	}
+
+	.textarea-text {
+		height: 510px;
+	}	
+
+	.search-btn, .search-text, .textarea-btn {
+		height: 60px;
+	}
+
+	.btn-info {
+		font-size: 1.4rem;
+	}
+
+	.search-text::placeholder {
+		font-size: 1.4rem;
+	}
+/* 
+	.app-content {
+
+	} */
+
+}
+
 .app-sidebar::-webkit-scrollbar {
 	width: 6px;
 }
@@ -414,30 +501,33 @@
 	padding-bottom: 40px;
 	padding: 0;
 }
-.side-menu__item {
-  display: flex;
-  justify-content: center;
-	position: relative;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	padding:25px 19px 25px 34px;
-	font-size: 14px;
-	font-weight: 400;
-	-webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-	-o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-	transition: border-left-color 0.3s ease, background-color 0.3s ease;
-	color:#031938;
-	border-bottom: 1px solid rgba(67, 87, 133, .2);
-  cursor: pointer;
+@media (max-width: 2000px) {
+	.side-menu__item {
+		display: flex;
+		justify-content: center;
+		position: relative;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		padding:25px 19px 25px 34px;
+		font-size: 14px;
+		font-weight: 400;
+		-webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		-o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		transition: border-left-color 0.3s ease, background-color 0.3s ease;
+		color:#031938;
+		border-bottom: 1px solid rgba(67, 87, 133, .2);
+		cursor: pointer;
+	}
 }
 .side-menu__item.active, .side-menu__item:hover, .side-menu__item:focus {
 	text-decoration: none;
-	color: #2d66f7;
-    background: #fff;
+	color: white !important;
+  /* background: #fff; */
+	background: #2d66f7 !important;
 }
 @media (min-width: 768px){
 	.app.sidebar-mini.sidenav-toggled .side-menu__label {
@@ -455,7 +545,7 @@
 	}
 }
 .side-menu__item.active .side-menu__icon, .side-menu__item:hover .side-menu__icon, .side-menu__item:focus .side-menu__icon{
-	color:#2d66f7;
+	color:white;
 }
 .slide-item.active, .slide-item:hover, .slide-item:focus {
 	text-decoration: none;
@@ -780,10 +870,10 @@
 		background: #fff;
 	}
 	.sidebar-mini.sidenav-toggled .app-sidebar:hover .slide-item:hover, .side-menu__item:hover .side-menu__label, .side-menu__item:hover .side-menu__icon, .side-menu__item:hover .angle{
-		color:#2d66f7 !important;
+		color:#fff !important;
 	}
 	.sidebar-mini.sidenav-toggled .app-sidebar:hover .side-menu__item.active .side-menu__label{
-		color:#2d66f7 !important;
+		color:#fff !important;
 	}
 	.sidebar-mini.sidenav-toggled .app-sidebar:hover .slide-item.active, .slide-item:hover, .slide-item:focus {
 		text-decoration: none;
