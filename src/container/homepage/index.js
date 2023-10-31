@@ -1,10 +1,30 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import SideMenu from "../../components/SideMenu";
+import OpenApi from "openai";
+
 
 const HomePage = () => {
 
+  const openai = new OpenApi({
+    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true
+  });
+
   const [menu, changeMenu] = useState(0);
+  const [isLoading, setIsLoading] = useState(false)
+  const [gptResponse, updateGptResponse] = useState("")
+
+  const getChatResponse = async () => {
+    setIsLoading(true);
+    const message = document.getElementById("search-text").value
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: message }],
+    });
+    updateGptResponse(completion.choices[0].message.content);
+    setIsLoading(false)
+  }
 
   return (
     <>
@@ -82,12 +102,17 @@ const HomePage = () => {
                     <div>
                       <div>
                         <div className="flex justify-content-center">
-                          <input type="text" className="search-text" placeholder="Ask me?" />
-                          <input type="button" className="search-btn btn-info" value="Send" />
+                          <input type="text" className="search-text" id="search-text" placeholder="Ask me?" />
+                          <input type="button" className="search-btn btn-info" onClick={() => { getChatResponse() }} value="Send" />
                         </div>
                       </div>
                       <div className="flex justify-content-center">
-                        <textarea id="chatText" name="chatText" className="textarea-text"  disabled/>
+                        {isLoading && (
+                          <div className="loader-overlay">
+                            <div className="loader"></div>
+                          </div>
+                        )}
+                        <textarea id="chatText" name="chatText" className="textarea-text" disabled value={gptResponse} />
                       </div>
                     </div>
                   </div>
@@ -103,7 +128,7 @@ const HomePage = () => {
                   <div className="page-leftheader">
                     <h4 className="page-title">Generate Content</h4>
                     <ol className="breadcrumb pl-0">
-                      <li className="breadcrumb-item" onClick={ () => changeMenu(0)}>Generate Content</li>
+                      <li className="breadcrumb-item" onClick={() => changeMenu(0)}>Generate Content</li>
                       <li className="breadcrumb-item active" aria-current="page">Generate CV</li>
                     </ol>
                   </div>
