@@ -202,7 +202,7 @@ const HomePage = () => {
                             <div className="loader"></div>
                           </div>
                         )}
-                        <h3 className="card-title">Insert Questions</h3>
+                        <h3 className="card-title">Quelle sont les invités</h3>
                       </div>
                     </div>
                     <Modal
