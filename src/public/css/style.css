@@ -767,6 +767,52 @@ pre code {
 .offset-11 {
 	margin-left: 91.66666667%;
 }
+
+/* Add this CSS to your component or a global stylesheet */
+
+.ReactModal__Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ReactModal__Content {
+  position: relative !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Box shadow for a bit of depth */
+  border-radius: 5px;
+  background: #fff; /* White background */
+  padding: 20px;
+  max-width: 400px; /* Adjust the max-width as needed */
+  width: 100%;
+  max-height: 80vh; /* Adjust the max-height as needed */
+  overflow-y: auto;
+  outline: none; /* Remove default focus style */
+}
+
+/* Add your own styles for h2, p, and button if needed */
+.ReactModal__Content h2 {
+  margin-bottom: 10px;
+}
+
+.ReactModal__Content p {
+  margin-bottom: 20px;
+}
+
+.ReactModal__Content button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 @media (min-width: 576px) {
 	.col-sm {
 		-ms-flex-preferred-size: 0;

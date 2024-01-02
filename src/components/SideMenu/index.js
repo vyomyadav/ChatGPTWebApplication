@@ -14,6 +14,10 @@ const SideMenu = ( props ) => {
         <li>
           <div className="side-menu__item" onClick={() => {changeMenu(1)}}><span className="side-menu__label">Chat</span></div>
         </li> 
+
+        <li>
+          <div className="side-menu__item" onClick={() => {changeMenu(3)}}><span className="side-menu__label">GPTInsert</span></div>
+        </li> 
       </ul>
     </aside>
   )

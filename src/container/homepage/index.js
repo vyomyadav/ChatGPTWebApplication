@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import SideMenu from "../../components/SideMenu";
 import OpenApi from "openai";
+import axios from "axios";
+import Modal from "react-modal";
 
 
 const HomePage = () => {
@@ -14,6 +16,8 @@ const HomePage = () => {
   const [menu, changeMenu] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
   const [gptResponse, updateGptResponse] = useState("")
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   const getChatResponse = async () => {
     setIsLoading(true);
@@ -25,6 +29,25 @@ const HomePage = () => {
     updateGptResponse(completion.choices[0].message.content);
     setIsLoading(false)
   }
+
+  const insertQuestions = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        "http://localhost:8080/createQuestionsBatch", // Replace with your API endpoint
+        {
+          // Add any data you want to send in the request body
+        }
+      );
+      // Handle the response, you might want to customize this based on your API response structure
+      setModalContent(response.data.message); // Assuming your API returns a message
+      setModalIsOpen(true);
+    } catch (error) {
+      console.error("Error inserting questions:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -148,6 +171,49 @@ const HomePage = () => {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {menu === 3 && (
+            <div className="app-content">
+              <div className="side-app">
+                {/* <!--Page header--> */}
+                <div className="page-header">
+                  <div className="page-leftheader">
+                    <h4 className="page-title">GPTInsert</h4>
+                    <ol className="breadcrumb pl-0">
+                      <li className="breadcrumb-item active">GPTInsert</li>
+                    </ol>
+                  </div>
+                </div>
+                {/* <!--End Page header--> */}
+
+                {/* <!--Row--> */}
+                <div className="row display-flex justify-content-center">
+                  <div className="col-lg-6 col-md-12">
+
+                    {/* {{-- Tab 1 --}} */}
+                    <div className="card">
+                      <div className="card-header flex justify-content-center" onClick={() => insertQuestions()}>
+                        {isLoading && (
+                          <div className="loader-overlay">
+                            <div className="loader"></div>
+                          </div>
+                        )}
+                        <h3 className="card-title">Insert Questions</h3>
+                      </div>
+                    </div>
+                    <Modal
+                      isOpen={modalIsOpen}
+                      onRequestClose={() => setModalIsOpen(false)}
+                      contentLabel="Example Modal"
+                    >
+                      <p>{modalContent}</p>
+                      <button className= "btn-info" onClick={() => setModalIsOpen(false)}>Close</button>
+                    </Modal>
+
                   </div>
                 </div>
               </div>
