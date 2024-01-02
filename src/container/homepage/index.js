@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import SideMenu from "../../components/SideMenu";
 import OpenApi from "openai";
@@ -49,11 +49,17 @@ const HomePage = () => {
     }
   };
 
+  useEffect(() => {
+    if(menu != 1 ) {
+      updateGptResponse("")
+    }
+  }, [menu])
+
   return (
     <>
       <div>
         <Navbar />
-        <SideMenu changeMenu={changeMenu} />
+        <SideMenu changeMenu={changeMenu}/>
         <div>
           {menu === 0 && (
             <div className="app-content">
@@ -202,7 +208,7 @@ const HomePage = () => {
                             <div className="loader"></div>
                           </div>
                         )}
-                        <h3 className="card-title">Quelle sont les invités</h3>
+                        <h3 className="card-title">Quelle sont les invites</h3>
                       </div>
                     </div>
                     <Modal

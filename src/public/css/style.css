@@ -813,6 +813,26 @@ pre code {
   cursor: pointer;
 }
 
+@media (min-width: 1280px) {
+	.ReactModal__Content {
+		position: relative !important;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Box shadow for a bit of depth */
+		border-radius: 5px;
+		background: #fff; /* White background */
+		padding: 20px;
+		max-width: 500px; /* Adjust the max-width as needed */
+		width: 100%;
+		max-height: 100vh; /* Adjust the max-height as needed */
+		overflow-y: auto;
+		outline: none; /* Remove default focus style */
+	}
+
+	.ReactModal__Content p {
+		margin-bottom: 20px;
+		font-size: 16px;
+	}
+}
+
 @media (min-width: 576px) {
 	.col-sm {
 		-ms-flex-preferred-size: 0;
