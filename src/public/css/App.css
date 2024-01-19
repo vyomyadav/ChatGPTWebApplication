@@ -5455,6 +5455,32 @@ input[type=button].btn-block {
   }
 }
 
+.dropdown-bar {
+  margin-bottom: 30px;
+}
+
+.dropdown-title {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 2000px) {
+  .dropdown-title {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+
+  .dropdown-bar {
+    margin-bottom: 50px;
+  }
+  
+}
+
 .accordion > .card {
   overflow: hidden;
 }
