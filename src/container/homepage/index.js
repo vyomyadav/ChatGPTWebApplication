@@ -82,7 +82,7 @@ const HomePage = () => {
         }
       );
       // Handle the response, you might want to customize this based on your API response structure
-      const data = JSON.stringify(response.data).replace(/"/g, "");
+      const data = JSON.parse(JSON.stringify(response.data));
       updateSummaryText(data);
     } catch (error) {
       console.error("Error inserting questions:", error.message);
