@@ -22,6 +22,8 @@ const HomePage = () => {
   const [clientList, updateClientList] = useState([]);
   const [selectedClient, updateSelectedClient] = useState("");
   const [summaryText, updateSummaryText] = useState("");
+  const [isAskMeBtnDisabled, disableAskMeBtn] = useState("disabled");
+  const [question, updateQuestion] = useState("");
 
   const getChatResponse = async (message) => {
     setIsLoading(true);
@@ -74,11 +76,14 @@ const HomePage = () => {
 
   const getSummary = async () => {
     try {
+      updateTextAreaHiddenStatus(false)
       setIsResumeLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/getSummaryInvite?data=${selectedClient.value}`, // Replace with your API endpoint
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/getSummaryInvite`, // Replace with your API endpoint
         {
           // Add any data you want to send in the request body
+          key: selectedClient.value,
+          question: "Key Metadata les textes pour le client"
         }
       );
       // Handle the response, you might want to customize this based on your API response structure
@@ -89,6 +94,10 @@ const HomePage = () => {
     } finally {
       setIsResumeLoading(false);
     }
+  }
+
+  const handleQuestionChange = () => {
+    updateQuestion(document.getElementById("search-text").value)
   }
 
   useEffect(() => {
@@ -105,11 +114,11 @@ const HomePage = () => {
   }, [menu])
 
   useEffect(() => {
-    if(selectedClient.value && selectedClient.value !== "") {
-      updateTextAreaHiddenStatus(false)
-      getSummary();
+    if (selectedClient.value && selectedClient.value !== "" && question !== "") {
+      disableAskMeBtn(false);
     }
-  }, [selectedClient])
+  }, [selectedClient, question])
+
 
   return (
     <>
@@ -287,9 +296,9 @@ const HomePage = () => {
                 {/* <!--Page header--> */}
                 <div className="page-header">
                   <div className="page-leftheader">
-                    <h4 className="page-title">Résumer</h4>
+                    <h4 className="page-title">Key Metadata</h4>
                     <ol className="breadcrumb pl-0">
-                      <li className="breadcrumb-item active">Résumer</li>
+                      <li className="breadcrumb-item active">Key Metadata</li>
                     </ol>
                   </div>
                 </div>
@@ -304,16 +313,27 @@ const HomePage = () => {
                     {!isLoading && (
                       <div>
                         <div className="dropdown-bar">
-                          <div className="row justify-content-center">
-                            <div className="col-lg-4 dropdown-title ">
-                              <span>Résumer les textes pour le client : </span>
+                          <div className="row">
+                            <div className="col-lg-4 dropdown-title justify-content-center">
+                              <span className="keyMeta-text">Key Metadata: </span>
                             </div>
-                            <div className="col-lg-6">
+                            <div className="col-lg-7">
                               <CustomDropdown
                                 clientList={clientList}
                                 selectedClient={selectedClient}
                                 updateSelectedClient={updateSelectedClient}
                               />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="question">
+                          <div className="row">
+                            <div className="col-lg-4 dropdown-title justify-content-center">
+                              <span className="keyMeta-text">Question: </span>
+                            </div>
+                            <div className="col-lg-7 dropdown-title">
+                              <input type="text" className="question-text" id="search-text" placeholder="Ask me?" onChange={handleQuestionChange} />
+                              <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
                             </div>
                           </div>
                         </div>

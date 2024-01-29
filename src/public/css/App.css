@@ -3040,9 +3040,9 @@ fieldset:disabled a.btn {
 
 .btn-info.disabled,
 .btn-info:disabled {
-  color: #fff;
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  color: black;
+  background-color: grey;
+  border-color: grey;
 }
 
 .btn-info:not(:disabled):not(.disabled):active,
@@ -5462,7 +5462,6 @@ input[type=button].btn-block {
 .dropdown-title {
   text-align: center;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -5470,7 +5469,6 @@ input[type=button].btn-block {
   .dropdown-title {
     text-align: center;
     display: flex;
-    justify-content: center;
     align-items: center;
     font-size: 20px;
   }
