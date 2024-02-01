@@ -83,7 +83,7 @@ const HomePage = () => {
         {
           // Add any data you want to send in the request body
           key: selectedClient.value,
-          question: "Key Metadata les textes pour le client"
+          question: question
         }
       );
       // Handle the response, you might want to customize this based on your API response structure
@@ -97,7 +97,7 @@ const HomePage = () => {
   }
 
   const handleQuestionChange = () => {
-    updateQuestion(document.getElementById("search-text").value)
+    updateQuestion(document.getElementById("question-text").value)
   }
 
   useEffect(() => {
@@ -332,7 +332,7 @@ const HomePage = () => {
                               <span className="keyMeta-text">Question: </span>
                             </div>
                             <div className="col-lg-7 dropdown-title">
-                              <input type="text" className="question-text" id="search-text" placeholder="Ask me?" onChange={handleQuestionChange} />
+                              <input type="text" className="question-text" id="question-text" placeholder="Ask me?" onChange={handleQuestionChange} />
                               <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
                             </div>
                           </div>
