@@ -20,7 +20,7 @@ const SideMenu = ( props ) => {
         </li> 
 
         <li>
-          <div className="side-menu__item" onClick={() => {changeMenu(4)}}><span className="side-menu__label">Key Metadata</span></div>
+          <div className="side-menu__item" onClick={() => {changeMenu(4)}}><span className="side-menu__label">Index</span></div>
         </li> 
       </ul>
     </aside>
