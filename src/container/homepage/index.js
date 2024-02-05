@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Navbar from "../../components/Navbar";
 import SideMenu from "../../components/SideMenu";
 import OpenApi from "openai";
 import axios from "axios";
 import Modal from "react-modal";
 import CustomDropdown from "../../components/Dropdown";
+import "react-tabs/style/react-tabs.css";
+
 
 
 const HomePage = () => {
@@ -20,10 +23,13 @@ const HomePage = () => {
   const [modalContent, setModalContent] = useState("");
   const [isTextAreaHidden, updateTextAreaHiddenStatus] = useState(true);
   const [clientList, updateClientList] = useState([]);
+  const [docList, updateDocList] = useState([]);
   const [selectedClient, updateSelectedClient] = useState("");
+  const [selectedDoc, updateSelectedDoc] = useState("");
   const [summaryText, updateSummaryText] = useState("");
   const [isAskMeBtnDisabled, disableAskMeBtn] = useState("disabled");
   const [question, updateQuestion] = useState("");
+  const [tabIndex, setTabIndex] = useState(0);
 
   const getChatResponse = async (message) => {
     setIsLoading(true);
@@ -74,18 +80,51 @@ const HomePage = () => {
     }
   };
 
+  const getDocList = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/getDistinctDoc`, // Replace with your API endpoint
+        {
+          // Add any data you want to send in the request body
+        }
+      );
+      // Handle the response, you might want to customize this based on your API response structure
+      const data = response.data.map(item => item.typ_de_doc);
+      updateDocList(data)
+    } catch (error) {
+      console.error("Error inserting questions:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getSummary = async () => {
     try {
       updateTextAreaHiddenStatus(false)
       setIsResumeLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/getSummaryInvite`, // Replace with your API endpoint
-        {
-          // Add any data you want to send in the request body
-          key: selectedClient.value,
-          question: question
-        }
-      );
+      let response = null;
+      if (tabIndex == 0) {
+        response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/getSummaryInvite`, // Replace with your API endpoint
+          {
+            // Add any data you want to send in the request body
+            key: selectedClient.value,
+            question: question
+          }
+        );
+      }
+      else if (tabIndex == 1) {
+        response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/getSummaryDoc`, // Replace with your API endpoint
+          {
+            // Add any data you want to send in the request body
+            key: selectedDoc.value,
+            question: question
+          }
+        );
+      }
+
       // Handle the response, you might want to customize this based on your API response structure
       const data = JSON.parse(JSON.stringify(response.data));
       updateSummaryText(data);
@@ -97,27 +136,39 @@ const HomePage = () => {
   }
 
   const handleQuestionChange = () => {
-    updateQuestion(document.getElementById("question-text").value)
+    if (tabIndex == 0) {
+      updateQuestion(document.getElementById("question-text").value)
+    }
+    else if (tabIndex == 1) {
+      updateQuestion(document.getElementById("doc-text").value)
+    }
+
   }
+
 
   useEffect(() => {
     if (menu != 1) {
       updateGptResponse("")
     }
     if (menu == 4) {
-      getClientList();
+      if (tabIndex == 0) {
+        getClientList();
+      }
+      else if (tabIndex == 1) {
+        getDocList();
+      }
     }
     if (menu != 4) {
       updateTextAreaHiddenStatus(true);
       updateSummaryText("");
     }
-  }, [menu])
+  }, [menu, tabIndex])
 
   useEffect(() => {
-    if (selectedClient.value && selectedClient.value !== "" && question !== "") {
+    if ((selectedClient.value || selectedDoc.value) && (selectedClient.value !== "" || selectedDoc.value !== "") && question !== "") {
       disableAskMeBtn(false);
     }
-  }, [selectedClient, question])
+  }, [selectedClient, question, selectedDoc])
 
 
   return (
@@ -253,9 +304,9 @@ const HomePage = () => {
                 {/* <!--Page header--> */}
                 <div className="page-header">
                   <div className="page-leftheader">
-                    <h4 className="page-title">Invités</h4>
+                    <h4 className="page-title">Invites</h4>
                     <ol className="breadcrumb pl-0">
-                      <li className="breadcrumb-item active">Invités</li>
+                      <li className="breadcrumb-item active">Invites</li>
                     </ol>
                   </div>
                 </div>
@@ -273,7 +324,7 @@ const HomePage = () => {
                             <div className="loader"></div>
                           </div>
                         )}
-                        <h3 className="card-title">Quelle sont les invités</h3>
+                        <h3 className="card-title">Quelle sont les invites</h3>
                       </div>
                     </div>
                     <Modal
@@ -296,62 +347,131 @@ const HomePage = () => {
                 {/* <!--Page header--> */}
                 <div className="page-header">
                   <div className="page-leftheader">
-                    <h4 className="page-title">Key Metadata</h4>
+                    <h4 className="page-title">Index</h4>
                     <ol className="breadcrumb pl-0">
-                      <li className="breadcrumb-item active">Key Metadata</li>
+                      <li className="breadcrumb-item active">Index</li>
                     </ol>
                   </div>
                 </div>
                 {/* <!--End Page header--> */}
-                <div className="row display-flex justify-content-center">
-                  <div className="col-lg-8 col-md-12">
-                    {isLoading && (
-                      <div className="loader-overlay">
-                        <div className="loader"></div>
-                      </div>
-                    )}
-                    {!isLoading && (
+                <div>
+                  <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+                    <TabList className="tab-list-custom">
+                      <Tab>Key Metadata</Tab>
+                      <Tab>Type de doc</Tab>
+                    </TabList>
+
+                    <TabPanel>
                       <div>
-                        <div className="dropdown-bar">
-                          <div className="row">
-                            <div className="col-lg-4 dropdown-title justify-content-center">
-                              <span className="keyMeta-text">Key Metadata: </span>
-                            </div>
-                            <div className="col-lg-7">
-                              <CustomDropdown
-                                clientList={clientList}
-                                selectedClient={selectedClient}
-                                updateSelectedClient={updateSelectedClient}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="question">
-                          <div className="row">
-                            <div className="col-lg-4 dropdown-title justify-content-center">
-                              <span className="keyMeta-text">Question: </span>
-                            </div>
-                            <div className="col-lg-7 dropdown-title">
-                              <input type="text" className="question-text" id="question-text" placeholder="Ask me?" onChange={handleQuestionChange} />
-                              <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
-                            </div>
-                          </div>
-                        </div>
-                        {!isTextAreaHidden &&
-                          (<div>
-                            <div className="flex justify-content-center">
-                              {isResumeLoading && (
-                                <div className="loader-overlay">
-                                  <div className="loader"></div>
+                        <div className="row display-flex justify-content-center">
+                          <div className="col-lg-8 col-md-12">
+                            {isLoading && (
+                              <div className="loader-overlay">
+                                <div className="loader"></div>
+                              </div>
+                            )}
+                            {!isLoading && (
+                              <div>
+                                <div className="dropdown-bar">
+                                  <div className="row">
+                                    <div className="col-lg-4 dropdown-title justify-content-center">
+                                      <span className="keyMeta-text">Key Metadata: </span>
+                                    </div>
+                                    <div className="col-lg-7">
+                                      <CustomDropdown
+                                        clientList={clientList}
+                                        selectedClient={selectedClient}
+                                        updateSelectedClient={updateSelectedClient}
+                                        placeholder={"Sélectionnez un client..."}
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
-                              )}
-                              <textarea id="chatText" name="chatText" className="textarea-text" disabled value={summaryText} />
-                            </div>
-                          </div>)
-                        }
+                                <div className="question">
+                                  <div className="row">
+                                    <div className="col-lg-4 dropdown-title justify-content-center">
+                                      <span className="keyMeta-text">Question: </span>
+                                    </div>
+                                    <div className="col-lg-7 dropdown-title">
+                                      <input type="text" className="question-text" id="question-text" placeholder="Ask me?" onChange={handleQuestionChange} />
+                                      <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
+                                    </div>
+                                  </div>
+                                </div>
+                                {!isTextAreaHidden &&
+                                  (<div>
+                                    <div className="flex justify-content-center">
+                                      {isResumeLoading && (
+                                        <div className="loader-overlay">
+                                          <div className="loader"></div>
+                                        </div>
+                                      )}
+                                      <textarea id="chatText" name="chatText" className="textarea-text" disabled value={summaryText} />
+                                    </div>
+                                  </div>)
+                                }
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
+                    </TabPanel>
+                    <TabPanel>
+                      <div>
+                        <div className="row display-flex justify-content-center">
+                          <div className="col-lg-8 col-md-12">
+                            {isLoading && (
+                              <div className="loader-overlay">
+                                <div className="loader"></div>
+                              </div>
+                            )}
+                            {!isLoading && (
+                              <div>
+                                <div className="dropdown-bar">
+                                  <div className="row">
+                                    <div className="col-lg-4 dropdown-title justify-content-center">
+                                      <span className="keyMeta-text">Type de doc: </span>
+                                    </div>
+                                    <div className="col-lg-7">
+                                      <CustomDropdown
+                                        clientList={docList}
+                                        selectedClient={selectedDoc}
+                                        updateSelectedClient={updateSelectedDoc}
+                                        placeholder={"Sélectionnez un type de doc..."}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="question">
+                                  <div className="row">
+                                    <div className="col-lg-4 dropdown-title justify-content-center">
+                                      <span className="keyMeta-text">Question: </span>
+                                    </div>
+                                    <div className="col-lg-7 dropdown-title">
+                                      <input type="text" className="question-text" id="doc-text" placeholder="Ask me?" onChange={handleQuestionChange} />
+                                      <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
+                                    </div>
+                                  </div>
+                                </div>
+                                {!isTextAreaHidden &&
+                                  (<div>
+                                    <div className="flex justify-content-center">
+                                      {isResumeLoading && (
+                                        <div className="loader-overlay">
+                                          <div className="loader"></div>
+                                        </div>
+                                      )}
+                                      <textarea id="chatText" name="chatText" className="textarea-text" disabled value={summaryText} />
+                                    </div>
+                                  </div>)
+                                }
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                  </Tabs>
                 </div>
               </div>
             </div>

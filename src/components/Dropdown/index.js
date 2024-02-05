@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Select from "react-select";
 
 const CustomDropdown = (props) => {
-  const { clientList, updateSelectedClient } = props
+  const { clientList, updateSelectedClient, placeholder } = props
   const [selectedOption, setSelectedOption] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -47,7 +47,7 @@ const CustomDropdown = (props) => {
         onChange={handleChange}
         options={options}
         isSearchable={true}
-        placeholder="Sélectionnez un client..."
+        placeholder={placeholder}
         styles={customStyles}
       />
     </div>

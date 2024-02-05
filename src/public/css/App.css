@@ -5465,6 +5465,8 @@ input[type=button].btn-block {
   align-items: center;
 }
 
+
+
 @media (min-width: 2000px) {
   .dropdown-title {
     text-align: center;
@@ -5475,6 +5477,11 @@ input[type=button].btn-block {
 
   .dropdown-bar {
     margin-bottom: 50px;
+  }
+
+  .tab-list-custom {
+    height: 40px;
+    font-size: 1.9rem;
   }
   
 }
