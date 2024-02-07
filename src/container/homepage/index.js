@@ -165,6 +165,11 @@ const HomePage = () => {
   }, [menu, tabIndex])
 
   useEffect(() => {
+    updateTextAreaHiddenStatus(true);
+    updateSummaryText("");
+  },[tabIndex])
+
+  useEffect(() => {
     if ((selectedClient.value || selectedDoc.value) && (selectedClient.value !== "" || selectedDoc.value !== "") && question !== "") {
       disableAskMeBtn(false);
     }
