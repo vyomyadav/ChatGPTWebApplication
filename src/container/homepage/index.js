@@ -84,13 +84,13 @@ const HomePage = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/getDistinctDoc`, // Replace with your API endpoint
+        `${process.env.REACT_APP_BACKEND_URL}/getAlertNom`, // Replace with your API endpoint
         {
           // Add any data you want to send in the request body
         }
       );
       // Handle the response, you might want to customize this based on your API response structure
-      const data = response.data.map(item => item.typ_de_doc);
+      const data = response.data
       updateDocList(data)
     } catch (error) {
       console.error("Error inserting questions:", error.message);

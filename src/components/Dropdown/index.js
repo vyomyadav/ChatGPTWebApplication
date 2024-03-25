@@ -5,8 +5,12 @@ const CustomDropdown = (props) => {
   const { clientList, updateSelectedClient, placeholder } = props
   const [selectedOption, setSelectedOption] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  const options = clientList.map(option => ({ value: option, label: option }));
+  let options;
+  if(clientList[0]?.id) {
+    options = clientList.map(option => ({ value: option.id, label: option.nom }));
+  } else {
+    options = clientList.map(option => ({ value: option, label: option }));
+  }
 
   useEffect(() => {
     const handleResize = () => {
