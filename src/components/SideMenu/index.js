@@ -15,12 +15,12 @@ const SideMenu = ( props ) => {
           <div className="side-menu__item" onClick={() => {changeMenu(1)}}><span className="side-menu__label">Chat</span></div>
         </li> 
 
-        <li>
+        {/* <li>
           <div className="side-menu__item" onClick={() => {changeMenu(3)}}><span className="side-menu__label">Invites</span></div>
-        </li> 
+        </li>  */}
 
         <li>
-          <div className="side-menu__item" onClick={() => {changeMenu(4)}}><span className="side-menu__label">Index</span></div>
+          <div className="side-menu__item" onClick={() => {changeMenu(4)}}><span className="side-menu__label">Key Request</span></div>
         </li> 
       </ul>
     </aside>

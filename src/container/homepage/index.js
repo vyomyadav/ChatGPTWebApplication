@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+// import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Navbar from "../../components/Navbar";
 import SideMenu from "../../components/SideMenu";
 import OpenApi from "openai";
 import axios from "axios";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import CustomDropdown from "../../components/Dropdown";
 import "react-tabs/style/react-tabs.css";
 
@@ -167,7 +167,7 @@ const HomePage = () => {
   useEffect(() => {
     updateTextAreaHiddenStatus(true);
     updateSummaryText("");
-  },[tabIndex])
+  }, [tabIndex])
 
   useEffect(() => {
     if ((selectedClient.value || selectedDoc.value) && (selectedClient.value !== "" || selectedDoc.value !== "") && question !== "") {
@@ -303,26 +303,26 @@ const HomePage = () => {
               </div>
             </div>
           )}
-          {menu === 3 && (
+          {/* {menu === 3 && (
             <div className="app-content">
-              <div className="side-app">
-                {/* <!--Page header--> */}
-                <div className="page-header">
+              <div className="side-app"> */}
+          {/* <!--Page header--> */}
+          {/* <div className="page-header">
                   <div className="page-leftheader">
                     <h4 className="page-title">Invites</h4>
                     <ol className="breadcrumb pl-0">
                       <li className="breadcrumb-item active">Invites</li>
                     </ol>
                   </div>
-                </div>
-                {/* <!--End Page header--> */}
+                </div> */}
+          {/* <!--End Page header--> */}
 
-                {/* <!--Row--> */}
-                <div className="row display-flex justify-content-center">
-                  <div className="col-lg-6 col-md-12">
+          {/* <!--Row--> */}
+          {/* <div className="row display-flex justify-content-center">
+                  <div className="col-lg-6 col-md-12"> */}
 
-                    {/* {{-- Tab 1 --}} */}
-                    <div className="card">
+          {/* {{-- Tab 1 --}} */}
+          {/* <div className="card">
                       <div className="card-header flex justify-content-center" onClick={() => insertQuestions()}>
                         {isLoading && (
                           <div className="loader-overlay">
@@ -331,8 +331,8 @@ const HomePage = () => {
                         )}
                         <h3 className="card-title">Quelle sont les invites</h3>
                       </div>
-                    </div>
-                    <Modal
+                    </div> */}
+          {/* <Modal
                       isOpen={modalIsOpen}
                       onRequestClose={() => setModalIsOpen(false)}
                       contentLabel="Example Modal"
@@ -344,23 +344,23 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div> 
+          )} */}
           {menu === 4 && (
             <div className="app-content">
               <div className="side-app">
                 {/* <!--Page header--> */}
                 <div className="page-header">
                   <div className="page-leftheader">
-                    <h4 className="page-title">Index</h4>
+                    <h4 className="page-title">Key Request</h4>
                     <ol className="breadcrumb pl-0">
-                      <li className="breadcrumb-item active">Index</li>
+                      <li className="breadcrumb-item active">Key Request</li>
                     </ol>
                   </div>
                 </div>
                 {/* <!--End Page header--> */}
                 <div>
-                  <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+                  {/* <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                     <TabList className="tab-list-custom">
                       <Tab>Key Metadata</Tab>
                       <Tab>Type de doc</Tab>
@@ -476,7 +476,60 @@ const HomePage = () => {
                         </div>
                       </div>
                     </TabPanel>
-                  </Tabs>
+                  </Tabs> */}
+                  <div>
+                    <div className="row display-flex justify-content-center">
+                      <div className="col-lg-8 col-md-12">
+                        {isLoading && (
+                          <div className="loader-overlay">
+                            <div className="loader"></div>
+                          </div>
+                        )}
+                        {!isLoading && (
+                          <div>
+                            <div className="dropdown-bar">
+                              <div className="row">
+                                <div className="col-lg-4 dropdown-title justify-content-center">
+                                  <span className="keyMeta-text">Key Request: </span>
+                                </div>
+                                <div className="col-lg-7">
+                                  <CustomDropdown
+                                    clientList={docList}
+                                    selectedClient={selectedDoc}
+                                    updateSelectedClient={updateSelectedDoc}
+                                    placeholder={"Sélectionnez un key request..."}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="question">
+                              <div className="row">
+                                <div className="col-lg-4 dropdown-title justify-content-center">
+                                  <span className="keyMeta-text">Question: </span>
+                                </div>
+                                <div className="col-lg-7 dropdown-title">
+                                  <input type="text" className="question-text" id="doc-text" placeholder="Ask me?" onChange={handleQuestionChange} />
+                                  <input type="button" className="question-btn btn-info" onClick={getSummary} value="Send" disabled={isAskMeBtnDisabled} />
+                                </div>
+                              </div>
+                            </div>
+                            {!isTextAreaHidden &&
+                              (<div>
+                                <div className="flex justify-content-center">
+                                  {isResumeLoading && (
+                                    <div className="loader-overlay">
+                                      <div className="loader"></div>
+                                    </div>
+                                  )}
+                                  <textarea id="chatText" name="chatText" className="textarea-text" disabled value={summaryText} />
+                                </div>
+                              </div>)
+                            }
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
